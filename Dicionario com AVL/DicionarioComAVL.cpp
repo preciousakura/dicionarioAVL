@@ -99,9 +99,9 @@ class DicioAVL {
       y->pai = pai;
       if(pai == nullptr) raiz = y;
       else {
-        if(pai->dir == x)
+        if(pai->dir != nullptr && pai->dir->chave == x->chave)
           pai->dir = y;
-        else if(pai->esq == x)
+        else if(pai->esq != nullptr && pai->esq->chave == x->chave)
           pai->esq = y;
       }
       x->pai = y;
@@ -123,9 +123,9 @@ class DicioAVL {
       x->pai = pai;
       if(pai == nullptr) raiz = x;
       else {
-        if(pai->dir == y)
+        if(pai->dir != nullptr && pai->dir->chave == y->chave)
           pai->dir = x;
-        else if(pai->esq == y)
+        else if(pai->esq != nullptr && pai->esq->chave == y->chave)
           pai->esq = x;
       }
       y->pai = x;
@@ -285,6 +285,7 @@ class DicioAVL {
     free(i.p);
   }
 }; 
+  
   
 
 int main () {
