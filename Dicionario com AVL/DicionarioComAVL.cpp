@@ -99,9 +99,9 @@ class DicioAVL {
       y->pai = pai;
       if(pai == nullptr) raiz = y;
       else {
-        if(pai->dir != nullptr && pai->dir->chave == x->chave)
+        if(pai->dir == x)
           pai->dir = y;
-        else if(pai->esq != nullptr && pai->esq->chave == x->chave)
+        else if(pai->esq == x)
           pai->esq = y;
       }
       x->pai = y;
@@ -123,9 +123,9 @@ class DicioAVL {
       x->pai = pai;
       if(pai == nullptr) raiz = x;
       else {
-        if(pai->dir != nullptr && pai->dir->chave == y->chave)
+        if(pai->dir == y)
           pai->dir = x;
-        else if(pai->esq != nullptr && pai->esq->chave == y->chave)
+        else if(pai->esq == y)
           pai->esq = x;
       }
       y->pai = x;
@@ -253,11 +253,13 @@ class DicioAVL {
         balancear(i.p->esq);
       } else { // tem os dois filhos
         Iterador sucessor(i.sucessor(i.p));
-        Noh* noh_removido = new Noh();
-        noh_removido = remove(sucessor);
+        Noh* noh_removido = remove(sucessor);
         
         noh_removido->dir = i.p->dir;
         noh_removido->esq = i.p->esq;
+        
+        if(i.p->dir != nullptr)i.p->dir->pai = noh_removido;
+        if(i.p->esq != nullptr)i.p->esq->pai = noh_removido;
         
         if(i.p->pai == nullptr) {
           raiz = noh_removido;
@@ -266,12 +268,8 @@ class DicioAVL {
         } else {
           if(i.p->pai->dir->chave == i.chave()) i.p->pai->dir = noh_removido;
           else if(i.p->pai->esq->chave == i.chave()) i.p->pai->esq = noh_removido;
-          
-          i.p->dir->pai = noh_removido;
-          i.p->esq->pai = noh_removido;
       
           noh_removido->pai = i.p->pai;
-          
         }
         balancear(noh_removido);
       }
@@ -286,26 +284,22 @@ class DicioAVL {
   }
 }; 
   
-  
+
+
 
 int main () {
   DicioAVL<double,double> D; int i;
 
-  D.inserir(204, -21);
-  D.inserir(169.75, 59.5);
-  D.inserir(246.75, -60);
-  D.inserir(-98.75, 53.5);
-  D.inserir(-133.25, 10.5);
-  D.inserir(-13.5, 25.5);
-  D.inserir(-81, 2.5);
   D.inserir(271.25, 83);
-
+  D.inserir(81.25, 43);
+  D.inserir(-215, 21);
+  D.inserir(-290, -51);
     
   
-  auto it = D.buscar(-98.75); 
+  auto it = D.buscar(81.25); 
   if (it != D.fim()) D.remover(it);
 
-   it = D.buscar(64); 
+   it = D.buscar(-215); 
   if (it != D.fim()) D.remover(it);
 
    it = D.buscar(20); 
