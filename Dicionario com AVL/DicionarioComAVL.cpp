@@ -145,20 +145,21 @@ class DicioAVL {
       if(balance > 1) { 
         if(balanceamento(node->obter_dir()) < 0) {
           rightRotate(node->obter_dir());
-          leftRotate(node);
+          node = leftRotate(node);
         } else {
-          leftRotate(node);
+          node = leftRotate(node);
         }
       } else if(balance < -1) {
         if(balanceamento(node->obter_esq()) > 0) {
           leftRotate(node->obter_esq());
-          rightRotate(node);
+          node = rightRotate(node);
         } else {
-          rightRotate(node);
+          node = rightRotate(node);
         }
-      } else {
-        balancear(node->obter_pai());
-      }
+      } 
+
+      if(node->pai != nullptr) balancear(node->obter_pai());
+  
     }
     
     int balanceamento(Noh *node) {
@@ -283,9 +284,6 @@ class DicioAVL {
     free(i.p);
   }
 }; 
-  
-
-
 
 int main () {
   DicioAVL<double,double> D; int i;
